@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Dados gerados pelo pipeline
+dados/*
+!dados/.gitkeep
+
+# Editores
+.idea/
+.vscode/
