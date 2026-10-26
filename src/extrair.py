@@ -1,15 +1,32 @@
 # Extrair.py
 import requests
 import pandas as pd
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 from banco import salvar
+
+
+def criar_sessao():
+    tentativas = Retry(
+        total=3,
+        backoff_factor=2,
+        status_forcelist=[429, 500, 502, 503, 504],
+        allowed_methods=["GET"],
+    )
+    sessao = requests.Session()
+    sessao.mount("https://", HTTPAdapter(max_retries=tentativas))
+    return sessao
+
+
+SESSAO = criar_sessao()
 
 
 def extrair_serie(codigo, nome):
     url = f"https://api.bcb.gov.br/dados/serie/bcdata.sgs.{codigo}/dados/ultimos/20?formato=json"
 
     # Buscar os dados:
-    resposta = requests.get(url, timeout=30)
+    resposta = SESSAO.get(url, timeout=30)
     resposta.raise_for_status()
     dados = resposta.json()
 
