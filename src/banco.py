@@ -17,6 +17,21 @@ def conectar():
     return create_engine(endereco)
 
 
+def salvar(tabela, nome):
+    registros = [
+        {"serie": nome, "data": linha.data.date(), "valor": linha.valor}
+        for linha in tabela.itertuples()
+    ]
+    sql = text("""
+        INSERT INTO indicadores (serie, data, valor)
+        VALUES (:serie, :data, :valor) AS novo
+        ON DUPLICATE KEY UPDATE valor = novo.valor
+    """)
+    with conectar().begin() as conexao:
+        conexao.execute(sql, registros)
+    return len(registros)
+
+
 if __name__ == "__main__":
     with conectar().connect() as conexao:
         print(conexao.execute(text("SELECT COUNT(*) FROM indicadores")).scalar())

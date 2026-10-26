@@ -2,6 +2,8 @@
 import requests
 import pandas as pd
 
+from banco import salvar
+
 
 def extrair_serie(codigo, nome):
     url = f"https://api.bcb.gov.br/dados/serie/bcdata.sgs.{codigo}/dados/ultimos/20?formato=json"
@@ -19,6 +21,7 @@ def extrair_serie(codigo, nome):
     # Salvar o CSV
     tabela.to_csv(f"dados/{nome}.csv", index=False)
     print(f"{len(tabela)} linhas salvas em dados/{nome}.csv")
+    print(f"{salvar(tabela, nome)} linhas gravadas no banco ({nome})")
 
 
 extrair_serie(432, "selic")
