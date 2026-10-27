@@ -1,5 +1,7 @@
 # Pipeline de Indicadores do Banco Central
 
+[![Pipeline diário](https://github.com/KAUAN-KAWASAKI/pipeline-indicadores-bcb/actions/workflows/pipeline.yml/badge.svg)](https://github.com/KAUAN-KAWASAKI/pipeline-indicadores-bcb/actions/workflows/pipeline.yml)
+
 Pipeline ETL em Python que coleta indicadores econômicos da API pública do Banco Central (SGS), trata os dados com pandas e carrega em um banco SQL.
 
 ## Indicadores
