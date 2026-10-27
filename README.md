@@ -16,7 +16,7 @@ Fonte: [API de dados abertos do Banco Central](https://dadosabertos.bcb.gov.br/)
 
 - [x] **Extração:** buscar as séries na API e salvar em CSV
 - [x] **Carga:** gravar os dados tratados em um banco MySQL
-- [ ] **Agendamento:** rodar o pipeline todo dia com GitHub Actions
+- [x] **Agendamento:** rodar o pipeline todo dia com GitHub Actions
 - [ ] **Docker:** empacotar o pipeline e o banco para rodar em qualquer máquina
 
 ## Estrutura
