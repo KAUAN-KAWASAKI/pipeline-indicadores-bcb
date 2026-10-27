@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from sqlalchemy import URL, create_engine, text
 
-load_dotenv()
+load_dotenv(os.getenv("ARQUIVO_ENV") or None)
 
 
 def conectar():

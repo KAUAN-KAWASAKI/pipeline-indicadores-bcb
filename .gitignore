@@ -4,6 +4,8 @@ __pycache__/
 .venv/
 venv/
 .env
+.env.aiven
+*.pem
 
 # Dados gerados pelo pipeline
 dados/*

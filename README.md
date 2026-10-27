@@ -38,6 +38,12 @@ pip install -r requirements.txt
 python src/extrair.py
 ```
 
+Por padrão o pipeline lê o `.env`. Para usar outro arquivo, como o `.env.aiven` com o banco na nuvem, defina `ARQUIVO_ENV`:
+
+```powershell
+$env:ARQUIVO_ENV = ".env.aiven"; python src/extrair.py
+```
+
 ## Agendamento
 
 O workflow `.github/workflows/pipeline.yml` roda o pipeline todo dia às 19:00 (Brasília) e também pode ser disparado à mão na aba **Actions**. Ele grava num MySQL na nuvem, configurado nos secrets do repositório (**Settings → Secrets and variables → Actions**):
