@@ -38,6 +38,19 @@ pip install -r requirements.txt
 python src/extrair.py
 ```
 
+## Agendamento
+
+O workflow `.github/workflows/pipeline.yml` roda o pipeline todo dia às 19:00 (Brasília) e também pode ser disparado à mão na aba **Actions**. Ele grava num MySQL na nuvem, configurado nos secrets do repositório (**Settings → Secrets and variables → Actions**):
+
+| Secret | Conteúdo |
+|---|---|
+| `DB_HOST` | endereço do servidor MySQL |
+| `DB_PORT` | porta (opcional, padrão 3306) |
+| `DB_USER` | usuário |
+| `DB_PASSWORD` | senha |
+| `DB_NAME` | nome do banco |
+| `DB_SSL_CA_CERT` | conteúdo do certificado CA, se o provedor exigir SSL (opcional) |
+
 ## Tecnologias
 
 Python · requests · pandas · SQL

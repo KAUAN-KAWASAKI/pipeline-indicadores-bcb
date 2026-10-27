@@ -1,0 +1,38 @@
+name: Pipeline diário
+
+on:
+  schedule:
+    # Todo dia às 22:00 UTC (19:00 em Brasília), depois da divulgação do dia
+    - cron: "0 22 * * *"
+  workflow_dispatch:
+
+jobs:
+  rodar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_PORT: ${{ secrets.DB_PORT || '3306' }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Salvar certificado SSL
+        env:
+          CERTIFICADO: ${{ secrets.DB_SSL_CA_CERT }}
+        run: |
+          if [ -n "$CERTIFICADO" ]; then
+            printf '%s\n' "$CERTIFICADO" > "$RUNNER_TEMP/ca.pem"
+            echo "DB_SSL_CA=$RUNNER_TEMP/ca.pem" >> "$GITHUB_ENV"
+          fi
+
+      - run: python src/extrair.py
