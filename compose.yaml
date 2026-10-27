@@ -1,0 +1,34 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-troque-esta-senha}
+    volumes:
+      - mysql-dados:/var/lib/mysql
+      # Cria o banco e a tabela na primeira vez que o container sobe
+      - ./sql/criar_tabela.sql:/docker-entrypoint-initdb.d/criar_tabela.sql:ro
+    ports:
+      # 3307 para não brigar com o MySQL instalado no computador
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  pipeline:
+    build: .
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: ${DB_PASSWORD:-troque-esta-senha}
+      DB_NAME: indicadores_bcb
+    volumes:
+      - ./dados:/app/dados
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  mysql-dados:

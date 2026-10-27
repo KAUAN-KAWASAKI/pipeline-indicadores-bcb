@@ -1,0 +1,10 @@
+.git/
+.github/
+.venv/
+venv/
+.serena/
+__pycache__/
+dados/
+.env
+.env.aiven
+*.pem

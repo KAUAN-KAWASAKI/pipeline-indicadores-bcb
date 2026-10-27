@@ -19,13 +19,14 @@ Fonte: [API de dados abertos do Banco Central](https://dadosabertos.bcb.gov.br/)
 - [x] **Extração:** buscar as séries na API e salvar em CSV
 - [x] **Carga:** gravar os dados tratados em um banco MySQL
 - [x] **Agendamento:** rodar o pipeline todo dia com GitHub Actions
-- [ ] **Docker:** empacotar o pipeline e o banco para rodar em qualquer máquina
+- [x] **Docker:** empacotar o pipeline e o banco para rodar em qualquer máquina
 
 ## Estrutura
 
 ```
 src/        código do pipeline
 dados/      arquivos gerados (não versionados)
+sql/        script de criação da tabela
 ```
 
 ## Como rodar
@@ -46,6 +47,16 @@ Por padrão o pipeline lê o `.env`. Para usar outro arquivo, como o `.env.aiven
 $env:ARQUIVO_ENV = ".env.aiven"; python src/extrair.py
 ```
 
+### Com Docker
+
+Sobe um MySQL já com a tabela criada e roda o pipeline contra ele, sem instalar Python nem MySQL:
+
+```bash
+docker compose up --build
+```
+
+Os CSVs aparecem em `dados/` e o banco fica num volume do Docker, mantido entre execuções. Para inspecioná-lo, conecte em `localhost:3307` com o usuário `root`. A senha é o `DB_PASSWORD` do `.env` ou, sem ele, `troque-esta-senha`. Para apagar os containers e o banco: `docker compose down -v`.
+
 ## Agendamento
 
 O workflow `.github/workflows/pipeline.yml` roda o pipeline todo dia às 19:00 (Brasília) e também pode ser disparado à mão na aba **Actions**. Ele grava num MySQL na nuvem, configurado nos secrets do repositório (**Settings → Secrets and variables → Actions**):
@@ -61,4 +72,4 @@ O workflow `.github/workflows/pipeline.yml` roda o pipeline todo dia às 19:00 (
 
 ## Tecnologias
 
-Python · requests · pandas · SQL
+Python · requests · pandas · SQLAlchemy · MySQL · Docker · GitHub Actions
