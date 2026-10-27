@@ -12,3 +12,6 @@ dados/*
 # Editores
 .idea/
 .vscode/
+
+# Serena (MCP)
+.serena/
